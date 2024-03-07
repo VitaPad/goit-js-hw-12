@@ -2,14 +2,14 @@ import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import axios from 'axios';
-import { getPhotos, page } from './js/pixabay-api.js';
+import { getPhotos } from './js/pixabay-api.js';
 import { createMurkup } from './js/render-functions.js';
 
 const container = document.querySelector('.gallery-container');
 const searchInput = document.querySelector('.form-input');
 const formEl = document.querySelector('.form');
 const fetchLoadBtn = document.querySelector('.load-button');
+let page = 1;
 const limit = 15;
 const totalPages = Math.ceil(100 / limit);
 
