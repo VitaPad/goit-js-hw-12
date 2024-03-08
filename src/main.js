@@ -20,17 +20,30 @@ const lightbox = new SimpleLightbox('.gallery-link', {
   captionsData: 'alt',
   captionDelay: 250,
 });
+function smoothScroll() {
+  const galleryItemHeight = document
+    .querySelector('.gallery-item')
+    .getBoundingClientRect().height;
+  window.scrollBy({
+    top: galleryItemHeight * 2,
+    behavior: 'smooth',
+  });
+}
 
 formEl.addEventListener('submit', async function (event) {
   event.preventDefault();
-  container.innerHTML = '<span class="loader"></span>';
+  container.insertAdjacentHTML('beforeend', '<span class="loader"></span>');
   searchQuery = searchInput.value.trim();
+
   fetchLoadBtn.style.display = 'block';
   if (searchQuery !== '') {
     try {
       const data = await getPhotos(searchQuery, page);
       createMurkup(data);
+      const loaderEl = document.querySelector('.loader');
+      loaderEl.remove();
       lightbox.refresh();
+      smoothScroll();
     } catch (error) {
       console.log(error);
     }
