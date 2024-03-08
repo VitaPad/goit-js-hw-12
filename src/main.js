@@ -12,6 +12,7 @@ const fetchLoadBtn = document.querySelector('.load-button');
 let page = 1;
 const limit = 15;
 const totalPages = Math.ceil(100 / limit);
+let searchQuery = '';
 
 fetchLoadBtn.style.display = 'none';
 
@@ -23,20 +24,18 @@ const lightbox = new SimpleLightbox('.gallery-link', {
 formEl.addEventListener('submit', async function (event) {
   event.preventDefault();
   container.innerHTML = '<span class="loader"></span>';
-
-  const searchQuery = searchInput.value.trim();
+  searchQuery = searchInput.value.trim();
   fetchLoadBtn.style.display = 'block';
-
   if (searchQuery !== '') {
     try {
-      const data = await getPhotos(searchQuery, 1);
+      const data = await getPhotos(searchQuery, page);
       createMurkup(data);
       lightbox.refresh();
-      page = 1;
     } catch (error) {
       console.log(error);
     }
   } else {
+    fetchLoadBtn.style.display = 'none';
     container.innerHTML = '';
     iziToast.error({
       title: 'Error',
@@ -57,9 +56,8 @@ fetchLoadBtn.addEventListener('click', async () => {
   }
 
   try {
-    const searchQuery = searchInput.value.trim();
-    const nextPage = page + 1;
-    const data = await getPhotos(searchQuery, nextPage);
+    const pages = (page += 1);
+    const data = await getPhotos(searchQuery, pages);
     createMurkup(data);
     lightbox.refresh();
   } catch (error) {

@@ -15,5 +15,5 @@ export function createMurkup(data) {
       </div>`
     )
     .join('');
-  container.innerHTML = murcup;
+  container.insertAdjacentHTML('beforeend', murcup);
 }
